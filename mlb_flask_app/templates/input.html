@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>MLB Free Agent Predictor</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -43,7 +43,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">Free Agent Predictor</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -60,20 +60,20 @@
     <div class="container">
 
       <div class="starter-template">
-        <h2>Input Page</h2>
-        <p>Enter some user input</p>
+        <h2>Predict Free Agent Destinations</h2>
+        <p>Enter your desired year</p>
       </div>
 
       <div class = "container">
 
 	<form  action="/output" method="GET">
           <div class="form-group">
-            <label for="birth_month">Birth Month:</label>
-            <input type="text" id="birth_month" name='birth_month' placeholder="e.g. ">
+            <label for="fa_year">Year (2006-2017):</label>
+            <input type="number" id="fa_year" name='fa_year' min = "2006" max = "2017">
           </div>
 
           <div>
-            <button type="submit" class="btn btn-default btn-lg">Find these Cesareans!</button>
+            <button type="submit" class="btn btn-default btn-lg">Filter for this year</button>
           </div>
 
 	</form>

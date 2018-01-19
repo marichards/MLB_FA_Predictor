@@ -1,10 +1,10 @@
-from flaskexample import app # Bring in the app
+from mlb_flask_app import app # Bring in the app
 from flask import render_template, request # Bring in template and request functionality
 from sqlalchemy import create_engine # Bring in DB connection ability
 from sqlalchemy_utils import database_exists, create_database # More DB
 import pandas as pd # DFs
 import psycopg2 # Postgres language specifics
-from flaskexample.a_Model import ModelIt # Bring in my user-defined model
+from mlb_flask_app.a_Model import ModelIt # Bring in my user-defined model
 
 # Set postgres username/password, and connection specifics
 username = 'postgres'
@@ -91,8 +91,10 @@ def fa_output():
     for i in range(0, query_results.shape[0]):
 
         free_agents.append(dict(name = query_results.iloc[i]['Full_Name'],
-                               age = query_results.iloc[i]['Age'],
-                               destination = query_results.iloc[i]['Destination']))
+                                age = query_results.iloc[i]['Age'],
+                                destination = query_results.iloc[i]['Destination'],
+                                length = query_results.iloc[i]['Length'],
+                                dollars = query_results.iloc[i]['Dollars']))
     return render_template('output.html', free_agents = free_agents)
 
 # Add a "Contact" page

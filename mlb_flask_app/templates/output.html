@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>MLB Free Agent Predictor</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -58,31 +58,57 @@
     <br><br>
 
     <div class="container">
-
       <div class="starter-template">
-        <h2>Predict Free Agent Destinations</h2>
-        <p>Enter your desired year</p>
+        <h2>Free Agent Predictor</h2>
+        <p>Enter some user input</p>
       </div>
 
       <div class = "container">
 
 	<form  action="/output" method="GET">
           <div class="form-group">
-            <label for="fa_year">Year (1998-2017):</label>
-            <input type="number" id="fa_year" name='fa_year' min = "1998" max = "2017">
+            <label for="Year">Year (2006-2017):</label>
+            <input type="number" id="fa_year" name='fa_year' min = "2006" max ="2017">
           </div>
-
           <div>
             <button type="submit" class="btn btn-default btn-lg">Filter for this year</button>
           </div>
-
 	</form>
       </div>
-
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
       <script src="../static/js/bootstrap.min.js"></script>
 
     </div> <!-- /.container-->
+
+    <div class="container">
+      <div class="starter-template">
+        <h3>Results:</h3>
+        <p class="lead">Here are the free agents from {{ fa_year }} <br> </p>
+      </div>
+
+      <table class="table table-hover">
+	<tr><th>Name</th><th>Age</th><th>Destination</th><th>Contract Length</th><th>Total Dollars ($)</th></tr>
+	{% for free_agent in free_agents %}
+	<tr><td>{{ free_agent['name'] }}</td><td>{{ free_agent['age']}}</td><td> {{ free_agent['destination'] }}</td>
+	<td>{{ free_agent['length'] }}</td><td>{{ free_agent['dollars'] }}</tr>
+	{% endfor %}
+      </table>
+
+
+    </div><!-- /.container -->
+
+    <div class="container">
+      <div class="starter-template">
+        <h3>Another Result:</h3>
+        <p class="lead">Now we've taken the input and called a function from your package.<br>The result is {{the_result}}</p>
+      </div>
+
+
+      <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+      <script src="../static/js/bootstrap.min.js"></script>
+
+
+    </div><!-- /.container -->
 
     <!-- Bootstrap core JavaScript
 	 ================================================== -->

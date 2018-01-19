@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>MLB Free Agent Predictor</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -59,7 +59,7 @@
 
     <div class="container">
       <div class="starter-template">
-        <h2>Free Agent Preditor</h2>
+        <h2>Free Agent Predictor</h2>
         <p>Enter some user input</p>
       </div>
 
@@ -67,8 +67,8 @@
 
 	<form  action="/output" method="GET">
           <div class="form-group">
-            <label for="Year">Year (1998-2017):</label>
-            <input type="number" id="fa_year" name='fa_year' min = "1998" max ="2017">
+            <label for="Year">Year (2006-2017):</label>
+            <input type="number" id="fa_year" name='fa_year' min = "2006" max ="2017">
           </div>
           <div>
             <button type="submit" class="btn btn-default btn-lg">Filter for this year</button>
