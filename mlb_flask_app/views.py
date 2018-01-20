@@ -82,10 +82,8 @@ def fa_output():
 
     # just select free agents for that year
     query = 'SELECT * FROM free_agents WHERE "Year" = {}'.format(fa_year)
-    print(query)
 
     query_results = pd.read_sql_query(query, con)
-    print(query_results)
 
     free_agents = []
     for i in range(0, query_results.shape[0]):
