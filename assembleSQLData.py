@@ -12,7 +12,7 @@ all_years = list(range(2006,2018))
 all_fa_data = getAllFAData(all_years)
 
 # Grab both pitcher and position player team WAR data
-pitching_war = pd.concat([getTeamPitcherWar(year) for year in range(2004,2018)])
+pitcher_war = pd.concat([getTeamPitcherWar(year) for year in range(2004,2018)])
 
 positions = ['c', '1b', '2b', '3b', 'ss', 'lf', 'rf', 'cf', 'dh']
 position_war = pd.concat([getTeamPosWar(position, year) for position in positions for year in range(2004,2018)])
@@ -28,8 +28,8 @@ all_teams = pd.read_csv("../baseballdatabank/core/Teams.csv")
 ## Step 3: Connect to the database (create it if necessary)
 
 # Set postgres username/password, and connection specifics
-username = 'postgres'
-password = 'S@ndw1ches'     # change this
+username = 'matt'
+password = 'trena'     # change this
 host     = 'localhost'
 port     = '5432'            # default port that postgres listens on
 db_name  = 'mlb_fa_db'
