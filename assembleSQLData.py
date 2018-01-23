@@ -12,10 +12,13 @@ all_years = list(range(2006,2018))
 all_fa_data = getAllFAData(all_years)
 
 # Grab both pitcher and position player team WAR data
-pitcher_war = pd.concat([getTeamPitcherWar(year) for year in range(2004,2018)])
+pitcher_war = pd.concat([getTeamPitcherWar(year) for year in range(2006,2018)])
 
 positions = ['c', '1b', '2b', '3b', 'ss', 'lf', 'rf', 'cf', 'dh']
-position_war = pd.concat([getTeamPosWar(position, year) for position in positions for year in range(2004,2018)])
+position_war = pd.concat([getTeamPosWar(position, year) for position in positions for year in range(2006,2018)])
+
+# Grab payroll data for 2006 to present
+team_payrolls = scrapePayrollData(2006)
 
 ## Step 2: Load Local CSV data
 all_batting = pd.read_csv("../baseballdatabank/core/Batting.csv")
@@ -63,4 +66,4 @@ teams_2004.to_sql('teams', engine, if_exists = 'replace')
 position_war.to_sql("position_team_war", engine, if_exists = 'replace')
 pitcher_war.to_sql("pitcher_team_war", engine, if_exists = 'replace')
 team_payrolls.to_sql("payrolls", engine, if_exists= 'replace')
-free_agents.to_sql("free_agents", engine, if_exists = 'replace')
+all_fa_data.to_sql("free_agents", engine, if_exists = 'replace')

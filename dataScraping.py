@@ -6,7 +6,36 @@ import requests
 from bs4 import BeautifulSoup
 
 # Function for getting payroll data
+def scrapePayrollData(year):
+    '''Given a starting year, get payroll data for that year to present'''
 
+    # Specify the url and get the data
+    url = "http://www.thebaseballcube.com/extras/payrolls/"
+    results = requests.get(url).text
+    payroll_soup = BeautifulSoup(results, 'html.parser')
+    just_table = payroll_soup.find_all('table')[1]
+    
+    # Get data for all teams
+    team_dict = {}
+    for entry in just_table.contents[1:]:
+        team = entry.find_all('td')[0].text
+        post_2002 = [float(line.text) for line in entry.find_all('a')]
+        pre_2003 = [float(line.text.split(' - ')[1]) for line in entry.find_all('td')[-1].find_all('option')]
+        
+        # Shorten the pre-2003 to just 5 years, back to 1998        
+        all_salaries = post_2002 + pre_2003[0:5]
+        all_salaries.reverse()
+        team_dict[team] = all_salaries
+        
+    # Make it a dataframe
+    payroll_df = pd.DataFrame(team_dict)
+    payroll_df['Year'] = list(range(1998, 2018))
+    payroll_df.set_index('Year', inplace=True)
+
+    # Pull out just my years
+    payroll_my_year = payroll_df.loc[year:]
+    
+    return payroll_my_year
 
 # Function for getting one year of BB-ref FA data
 def compileFAsForYear(year):

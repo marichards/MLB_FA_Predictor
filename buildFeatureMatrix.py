@@ -9,8 +9,8 @@ from scipy.stats import zscore
 
 def db_connect():
     # Set postgres username/password, and connection specifics
-    username = 'postgres'
-    password = 'S@ndw1ches'     # change this
+    username = 'matt'
+    password = 'trena'     # change this
     host     = 'localhost'
     port     = '5432'            # default port that postgres listens on
     db_name  = 'mlb_fa_db'
@@ -174,7 +174,6 @@ def addInflation(df_money, engine):
     payrolls = pullFullTable('payrolls', engine)
     payrolls_2006 = payrolls[payrolls.Year >= 2006]
     payrolls_2006.set_index('Year', inplace=True)
-    payrolls_2006.drop(['index'], axis = 1, inplace=True)
 
     # Compute the total and inflation factor, then grab just those in a DF
     payrolls_2006['Total'] = payrolls_2006.sum(axis = 1)
