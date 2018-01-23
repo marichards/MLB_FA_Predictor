@@ -12,10 +12,10 @@ all_years = list(range(2006,2018))
 all_fa_data = getAllFAData(all_years)
 
 # Grab both pitcher and position player team WAR data
-all_pitching_WAR = pd.concat([getTeamPitcherWar(year) for year in range(2004,2018)])
+pitching_war = pd.concat([getTeamPitcherWar(year) for year in range(2004,2018)])
 
 positions = ['c', '1b', '2b', '3b', 'ss', 'lf', 'rf', 'cf', 'dh']
-all_position_war = pd.concat([getTeamPosWar(position, year) for position in positions for year in range(2004,2018)])
+position_war = pd.concat([getTeamPosWar(position, year) for position in positions for year in range(2004,2018)])
 
 ## Step 2: Load Local CSV data
 all_batting = pd.read_csv("../baseballdatabank/core/Batting.csv")

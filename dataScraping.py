@@ -201,4 +201,3 @@ def getTeamPitcherWar(year):
                                               )
     
     return all_pitching_war
-
