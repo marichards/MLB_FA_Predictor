@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 import psycopg2
 import pandas as pd
+import pickle
 
 ## Step 1: Assemble Web Data
 
@@ -11,14 +12,15 @@ import pandas as pd
 all_years = list(range(2006,2018))
 all_fa_data = getAllFAData(all_years)
 
-# Grab both pitcher and position player team WAR data
-pitcher_war = pd.concat([getTeamPitcherWar(year) for year in range(2006,2018)])
-
-positions = ['c', '1b', '2b', '3b', 'ss', 'lf', 'rf', 'cf', 'dh']
-position_war = pd.concat([getTeamPosWar(position, year) for position in positions for year in range(2006,2018)])
-
 # Grab payroll data for 2006 to present
 team_payrolls = scrapePayrollData(2006)
+
+# Simply load the Team WAR data
+with open('position_war.pickle', 'rb') as file:
+    position_war = pickle.load(file)
+
+with open('pitcher_war.pickle', 'rb') as file:
+    pitcher_war = pickle.load(file)    
 
 ## Step 2: Load Local CSV data
 all_batting = pd.read_csv("../baseballdatabank/core/Batting.csv")
