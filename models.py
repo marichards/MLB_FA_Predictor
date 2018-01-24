@@ -59,7 +59,7 @@ def splitDataByYear(df, year, player_type):
     X_train = df_train[features].values
     X_test = df_test[features].values
     y_train = df_train[['Dollars_2006','Length','Contract']]
-    y_test = df_test[['Dollars_2006','Length','Contract']]
+    y_test = df_test[['Dollars_2006','Length','Contract', 'Dollars']]
 
     return X_train, y_train, X_test, y_test    
 
@@ -86,7 +86,7 @@ def predictLength(X_train, y_train, X_test):
     idx = y_train.Dollars_2006.notnull()
     y_train = y_train[idx]
     X_train = X_train[idx]
-    
+
     # Grab the y values
     y_train_values = y_train['Length'].values
     
