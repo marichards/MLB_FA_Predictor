@@ -7,8 +7,8 @@ import psycopg2 # Postgres language specifics
 from mlb_flask_app.a_Model import ModelIt # Bring in my user-defined model
 
 # Set postgres username/password, and connection specifics
-username = 'postgres'
-password = 'S@ndw1ches'     # change this
+username = 'matt'
+password = 'trena'     # change this
 host     = 'localhost'
 port     = '5432'            # default port that postgres listens on
 db_name  = 'mlb_fa_db'
@@ -20,8 +20,6 @@ con = psycopg2.connect(database = db_name,
                        user = username,
                        password = password,
                        host = host)
-
-
 
 def index():
     # Use user Miguel on the main and index pages
@@ -105,3 +103,9 @@ def contacts():
     return render_template("index.html",
                            title = 'Contacts',
                            user = {'nickname' : 'Miguel'})
+
+@app.route('/jumbo')
+def home_page():
+    '''Organize the home page with the Jumbotron template'''
+
+    return render_template("jumbotron.html")
