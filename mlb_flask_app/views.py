@@ -4,7 +4,11 @@ from sqlalchemy import create_engine # Bring in DB connection ability
 from sqlalchemy_utils import database_exists, create_database # More DB
 import pandas as pd # DFs
 import psycopg2 # Postgres language specifics
-from mlb_flask_app.a_Model import ModelIt # Bring in my user-defined model
+
+# Bring in my user-defined models
+import mlb_flask_app.models as models
+import mlb_flas_app.buildFeatureMatrix as bfm
+
 
 # Set postgres username/password, and connection specifics
 username = 'matt'
@@ -78,7 +82,31 @@ def fa_output():
     # pull 'fa_year' from input field and store it as an integer
     fa_year = int(request.args.get('fa_year'))
 
-    # just select free agents for that year
+    # Load and prepare the datasets
+    pitcher_all, position_all = models.loadAllData()
+    pitcher_prepped = models.prepareFreeAgentData(pitcher_all)
+    position_prepped = models.prepareFreeAgentData(position_all)
+
+    # Use year to split dataset
+    X_train_pitch, y_train_pitch, X_test_pitch, y_test_pitch = models.splitDataByYear(pitcher_prepped, fa_year, 'pitcher')
+    X_train_pos, y_train_pos, X_test_pos, y_test_pos = models.splitDataByYear(position_prepped, fa_year, 'position')
+
+    # Predict whether they'll get contracts
+    _, contract_pitch = models.predictContract(X_train_pitch, y_train_pitch, X_test_pitch)
+    _, contract_pos = models.predictContract(X_train_pos, y_train_pos, X_test_pos)
+
+    # Predict contract length
+    _, length_pitch = models.predictLength(X_train_pitch, y_train_pitch, X_test_pitch)
+    _, length_pos = models.predictLength(X_train_pos, y_train_pos, X_test_pos)
+
+    # Predict contract dollars
+    _, dollars_pitch = models.predictDollars(X_train_pitch, y_train_pitch, X_test_pitch)
+    _, dollars_pos = models.predictDollars(X_train_pos, y_train_pos, X_test_pos)
+
+    # Grab the inflation factor
+    inflation_factor = pitcher_prepped[pitcher_prepped.Year == fa_year]['Inflation_Factor'].unique()[0]
+
+    # select free agents for that year
     query = 'SELECT * FROM free_agents WHERE "Year" = {}'.format(fa_year)
 
     query_results = pd.read_sql_query(query, con)
