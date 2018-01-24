@@ -217,9 +217,13 @@ def main():
     position_adjusted = addInflation(position_war, engine)
     pitching_adjusted = addInflation(pitching_war, engine)
 
+    # Remove players from non-qualifying position
+    position_final = position_adjusted[position_adjusted.Position.isin(['SP','RP']) == False]
+    pitching_final = pitching_adjusted[pitching_adjusted.Position.isin(['SP','RP']) == True]
+
     # Save them as a pickle file
-    pitching_adjusted.to_pickle('pitching_data.pickle')
-    position_adjusted.to_pickle('position_data.pickle')
+    pitching_final.to_pickle('pitching_data.pickle')
+    position_final.to_pickle('position_data.pickle')
 
 
 if __name__ == '__main__':
