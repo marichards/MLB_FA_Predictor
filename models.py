@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 # Import LogisticRegression
 from sklearn.linear_model import LogisticRegression
-# Import xgboost
-import xgboost as xgb
+# Import GradientBoosted
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingClassifier
 # Import RSME
 from sklearn.metrics import mean_squared_error
 # Import Classification metrics
@@ -79,7 +80,7 @@ def predictContract(X_train, y_train, X_test):
     
     return logr, y_pred
 
-# Define the length function (xgboost classification)
+# Define the length function (boosted classification)
 def predictLength(X_train, y_train, X_test):
 
     # Shorten training to only non-null dollars
@@ -91,14 +92,14 @@ def predictLength(X_train, y_train, X_test):
     y_train_values = y_train['Length'].values
     
     # Designate a logistic regression model
-    xgc = xgb.XGBClassifier()
+    gbc = GradientBoostingClassifier()
 
     # Train the  model
-    xgc.fit(X_train, y_train_values)
+    gbc.fit(X_train, y_train_values)
 
-    y_pred = xgc.predict(X_test)    
+    y_pred = gbc.predict(X_test)    
     
-    return xgc, y_pred
+    return gbc, y_pred
 
 # Define the dollars function (xgboost regression)
 def predictDollars(X_train, y_train, X_test):
@@ -112,11 +113,11 @@ def predictDollars(X_train, y_train, X_test):
     y_train_values = y_train['Dollars_2006'].values
     
     # Designate a logistic regression model
-    xgr = xgb.XGBRegressor()
+    gbr = GradientBoostingRegressor()
 
     # Train the  model
-    xgr.fit(X_train, y_train_values)
+    gbr.fit(X_train, y_train_values)
 
-    y_pred = xgr.predict(X_test)    
+    y_pred = gbr.predict(X_test)    
     
-    return xgr, y_pred
+    return gbr, y_pred
