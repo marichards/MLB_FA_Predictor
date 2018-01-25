@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 # Import LogisticRegression
 from sklearn.linear_model import LogisticRegression
-# Import xgboost
-import xgboost as xgb
+# Import GradientBoosted
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingClassifier
 # Import RSME
 from sklearn.metrics import mean_squared_error
 # Import Classification metrics
@@ -18,11 +19,11 @@ def loadAllData():
     '''Load both saved data frames for use in the models'''
 
     # Load pitchers
-    with open('pitching_data.pickle', 'rb') as file:
+    with open('/home/ubuntu/Github/MLB_FA_Predictor/mlb_flask_app/pitching_data.pickle', 'rb') as file:
         pitcher_all = pickle.load(file)
 
     # Load position players
-    with open('position_data.pickle', 'rb') as file:
+    with open('/home/ubuntu/Github/MLB_FA_Predictor/mlb_flask_app/position_data.pickle', 'rb') as file:
         position_all = pickle.load(file)
 
     return pitcher_all, position_all
@@ -59,7 +60,7 @@ def splitDataByYear(df, year, player_type):
     X_train = df_train[features].values
     X_test = df_test[features].values
     y_train = df_train[['Dollars_2006','Length','Contract']]
-    y_test = df_test[['Dollars_2006','Length','Contract']]
+    y_test = df_test[['Dollars_2006','Length','Contract', 'Dollars']]
 
     return X_train, y_train, X_test, y_test    
 
@@ -79,26 +80,26 @@ def predictContract(X_train, y_train, X_test):
     
     return logr, y_pred
 
-# Define the length function (xgboost classification)
+# Define the length function (boosted classification)
 def predictLength(X_train, y_train, X_test):
 
     # Shorten training to only non-null dollars
     idx = y_train.Dollars_2006.notnull()
     y_train = y_train[idx]
     X_train = X_train[idx]
-    
+
     # Grab the y values
     y_train_values = y_train['Length'].values
     
     # Designate a logistic regression model
-    xgc = xgb.XGBClassifier()
+    gbc = GradientBoostingClassifier()
 
     # Train the  model
-    xgc.fit(X_train, y_train_values)
+    gbc.fit(X_train, y_train_values)
 
-    y_pred = xgc.predict(X_test)    
+    y_pred = gbc.predict(X_test)    
     
-    return xgc, y_pred
+    return gbc, y_pred
 
 # Define the dollars function (xgboost regression)
 def predictDollars(X_train, y_train, X_test):
@@ -112,11 +113,11 @@ def predictDollars(X_train, y_train, X_test):
     y_train_values = y_train['Dollars_2006'].values
     
     # Designate a logistic regression model
-    xgr = xgb.XGBRegressor()
+    gbr = GradientBoostingRegressor()
 
     # Train the  model
-    xgr.fit(X_train, y_train_values)
+    gbr.fit(X_train, y_train_values)
 
-    y_pred = xgr.predict(X_test)    
+    y_pred = gbr.predict(X_test)    
     
-    return xgr, y_pred
+    return gbr, y_pred

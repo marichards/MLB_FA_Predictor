@@ -7,7 +7,7 @@ import psycopg2 # Postgres language specifics
 
 # Bring in my user-defined models
 import mlb_flask_app.models as models
-import mlb_flas_app.buildFeatureMatrix as bfm
+import mlb_flask_app.buildFeatureMatrix as bfm
 
 
 # Set postgres username/password, and connection specifics
@@ -25,29 +25,37 @@ con = psycopg2.connect(database = db_name,
                        password = password,
                        host = host)
 
+@app.route('/')  
+@app.route('/index')
 def index():
-    # Use user Miguel on the main and index pages
+    '''Organize the home page with the Jumbotron template'''
+
+    return render_template("jumbotron.html")
+
+@app.route('/about_me')
+def aboutme():
+    '''Return info about me'''
 
     return render_template("index.html",
-                           title = 'Home',
-                           user = {'nickname' : 'Miguel'})
+                           title = 'About Me',
+                           user = {'nickname' : 'About Me'})
 
-# Add the database page
-@app.route('/2017')
-def page_2017():
-    sql_query = """
+@app.route('/algorithm')
+def algorithm():
+    '''Information about how it works'''
 
-SELECT * FROM free_agents where "Year" = 2017;
+    return render_template("index.html",
+                           title = 'Algorithm',
+                           user = {'nickname' : 'Algorithm'})
 
-"""
 
-    query_results = pd.read_sql_query(sql_query, con)
-    free_agents = ""
-    for i in range(0,10):
-        free_agents += query_results.iloc[i]['Full_Name']
-        free_agents += "<br>"
+@app.route('/validation')
+def validation():
+    '''Plots and tables showing validation, with text in between'''
 
-    return free_agents
+    return render_template("index.html",
+                           title = 'Validation',
+                           user = {'nickname' : 'Validation'})
 
 # Add a fancy database page
 @app.route('/2017_fancy')
@@ -71,10 +79,9 @@ SELECT * FROM free_agents WHERE "Year" = 2017;
 
 # Add "Input" and make it the home page too
 @app.route('/input')
-@app.route('/')  
-@app.route('/index')
 def fa_input():
     return render_template('input.html')
+
 
 # Add "Output"
 @app.route('/output')
@@ -106,23 +113,41 @@ def fa_output():
     # Grab the inflation factor
     inflation_factor = pitcher_prepped[pitcher_prepped.Year == fa_year]['Inflation_Factor'].unique()[0]
 
-    # select free agents for that year
-    query = 'SELECT * FROM free_agents WHERE "Year" = {}'.format(fa_year)
+    # Create 2 data frames
+    pitchers_df =  pd.DataFrame({'nameFirst' : pitcher_prepped[pitcher_prepped.Year == fa_year]['nameFirst'].values,
+                                 'nameLast' : pitcher_prepped[pitcher_prepped.Year == fa_year]['nameLast'].values,
+                                 'position' : pitcher_all[pitcher_prepped.Year == fa_year]['Position'],
+                                 'contract_pred' : contract_pitch,
+                                 'contract_actual' : y_test_pitch['Contract'],
+                                 'length_pred' : length_pitch,
+                                 'length_actual': y_test_pitch['Length'],
+                                 'dollars_pred' : dollars_pitch * inflation_factor,
+                                 'dollars_actual' : y_test_pitch['Dollars']})
 
-    query_results = pd.read_sql_query(query, con)
+    position_df =  pd.DataFrame({'nameFirst' : position_prepped[position_prepped.Year == fa_year]['nameFirst'].values,
+                                 'nameLast' : position_prepped[position_prepped.Year == fa_year]['nameLast'].values,
+                                 'position' : position_all[position_prepped.Year == fa_year]['Position'],
+                                 'contract_pred' : contract_pos,
+                                 'contract_actual' : y_test_pos['Contract'],
+                                 'length_pred' : length_pos,
+                                 'length_actual': y_test_pos['Length'],
+                                 'dollars_pred' : dollars_pos * inflation_factor,
+                                 'dollars_actual' : y_test_pos['Dollars']})
 
-    free_agents = []
-    for i in range(0, query_results.shape[0]):
+    # Put them together via stacking
+    full_df = pd.concat([pitchers_df, position_df])
 
-        free_agents.append(dict(name = query_results.iloc[i]['Full_Name'],
-                                age = query_results.iloc[i]['Age'],
-                                destination = query_results.iloc[i]['Destination'],
-                                length = query_results.iloc[i]['Length'],
-                                dollars = query_results.iloc[i]['Dollars']))
-    return render_template('output.html', free_agents = free_agents)
+    # Do some more formatting
+    full_df['dollars_actual'] = full_df['dollars_actual'].apply(lambda x: '{:,.2f}'.format(x))
+    full_df['dollars_pred'] = full_df['dollars_pred'].apply(lambda x: '{:,.2f}'.format(x))
+    full_df['dollars_actual'].replace({'nan': '0'}, inplace = True)
+    full_df.loc[full_df.contract_pred == False,'dollars_pred'] = '0'
+    full_df.loc[full_df.contract_pred == False,'length_pred'] = 0
+
+    return render_template('output.html', free_agents = full_df)
 
 # Add a "Contact" page
-@app.route('/db_fancy#contact')
+@app.route('/index#contact')
 
 def contacts():
     ''' Put a simple contact info'''
@@ -132,8 +157,3 @@ def contacts():
                            title = 'Contacts',
                            user = {'nickname' : 'Miguel'})
 
-@app.route('/jumbo')
-def home_page():
-    '''Organize the home page with the Jumbotron template'''
-
-    return render_template("jumbotron.html")
