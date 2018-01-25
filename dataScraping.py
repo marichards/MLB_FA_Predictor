@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 
 # Function for getting payroll data
 def scrapePayrollData(year):
@@ -54,15 +54,27 @@ def compileFAsForYear(year):
     fa_origins = [player_info.find('td', {"data-stat":"from_team_ID"}).text.strip() for player_info in fa_table.find_all('tr')]
     fa_war = [player_info.find('td', {"data-stat":"WAR"}).text.strip() for player_info in fa_table.find_all('tr')]
     fa_age = [int(player_info.find('td', {"data-stat":"age"}).text.strip()) for player_info in fa_table.find_all('tr')]
+
+
+    # Grab inner tables
+    bat_soup = BeautifulSoup(free_agent_soup.find(id = 'all_fa_batting').findAll(text=lambda text:isinstance(text, Comment))[0], 'html.parser')
+    bat_table = bat_soup.find('tbody')
+    bat_players = [player_info.find('td', {"data-stat":"player"}).text.strip() for player_info in bat_table.find_all('tr')]
+    bat_war = [player_info.find('td', {"data-stat":"WAR"}).text.strip() for player_info in bat_table.find_all('tr')]
+    bat_age = [int(player_info.find('td', {"data-stat":"age"}).text.strip()) for player_info in bat_table.find_all('tr')]
+    
+    pitch_soup = BeautifulSoup(free_agent_soup.find(id = 'all_fa_pitching').findAll(text=lambda text:isinstance(text, Comment))[0], 'html.parser')
+    pitch_table = pitch_soup.find('tbody')
+    pitch_players = [player_info.find('td', {"data-stat":"player"}).text.strip() for player_info in pitch_table.find_all('tr')]
+    pitch_war = [player_info.find('td', {"data-stat":"WAR"}).text.strip() for player_info in pitch_table.find_all('tr')]
+    pitch_age = [int(player_info.find('td', {"data-stat":"age"}).text.strip()) for player_info in pitch_table.find_all('tr')]
+
     
     # Make a data frame from the lists
-    fa_dict = {"Full_Name" : fa_players,
-               "Age" : fa_age,
-               "Destination" : fa_destinations,
-               "Origin" : fa_origins,
-               "WAR_3" : fa_war
-          }
-
+    fa_dict = {"Full_Name" : fa_players + bat_players + pitch_players,              
+               "Age" : fa_age + bat_age + pitch_age,                         
+               "WAR_3" : fa_war + bat_war + pitch_war
+    }
     fa_df = pd.DataFrame(fa_dict)
     
     # Split the "Full Name" into First and Last
@@ -76,19 +88,6 @@ def compileFAsForYear(year):
     # Convert WAR to a numeric and fill missing values with "0"
     fa_df['WAR_3'] = pd.to_numeric(fa_df['WAR_3'], errors='coerce')
     fa_df['WAR_3'] = fa_df['WAR_3'].fillna(0)
-    
-    # Convert altered Destination/Origin 
-    dest_change = {'Anaheim Angels': 'Los Angeles Angels of Anaheim',
-                   'Los Angeles Angels' : 'Los Angeles Angels of Anaheim',
-                   'Tampa Bay Devil Rays' : 'Tampa Bay Rays',
-                   'Montreal Expos' : 'Washington Nationals', 
-                   'Florida Marlins' : 'Miami Marlins'
-                  }
-    
-    origin_change = {'ANA': 'LAA', 'TBD':'TBR', 'MON':'WSN', 'FLA':'MIA'}
-
-    fa_df['Destination'] = fa_df['Destination'].replace(dest_change)
-    fa_df['Origin'] = fa_df['Origin'].replace(origin_change)
     
     return fa_df
 
@@ -230,3 +229,5 @@ def getTeamPitcherWar(year):
                                               )
     
     return all_pitching_war
+
+

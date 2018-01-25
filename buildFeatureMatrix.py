@@ -117,7 +117,7 @@ def addFilterFreeAgents(stats_df, engine):
     stats_w_people = pd.merge(stats_df, people_trimmed, on = 'playerID', how = 'inner')
     
     # Join to free agents based on nameFirst/nameLast
-    free_agents_trimmed = free_agents[['Age', 'Destination', 'WAR_3', 'nameFirst', 'nameLast',
+    free_agents_trimmed = free_agents[['Age', 'WAR_3', 'nameFirst', 'nameLast',
                                        'Year', 'Dollars', 'Length', 'Position']]
     free_agent_stats = pd.merge(free_agents_trimmed, stats_w_people, 
                                 left_on = ['nameFirst', 'nameLast', 'Year'],
