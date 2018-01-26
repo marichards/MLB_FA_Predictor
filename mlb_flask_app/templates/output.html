@@ -112,10 +112,8 @@
 	    <th>First Name</th>
 	    <th>Last Name</th>
 	    <th>Position</th>
-	    <th>Predicted Length</th>
-	    <th>Predicted Dollars ($)</th>
-	    <th>Actual Length</th>
-	    <th>Actual Dollars ($)</th>
+	    <th>Predicted Average Dollars($/yr)</th>
+	    <th>Actual Average Dollars ($/yr)</th>
 	  </tr>
 	</thead>
 	<tbody>
@@ -123,11 +121,9 @@
 	  <tr>
 	    <td>{{ free_agent['nameFirst'] }}</td>
 	    <td>{{ free_agent['nameLast']}}</td>
-	    <td> {{ free_agent['position'] }}</td>
-	    <td>{{ free_agent['length_pred'] }}</td>
-	    <td>{{ free_agent['dollars_pred'] }}</td>
-	    <td>{{ free_agent['length_actual'] }}</td>
-	    <td>{{ free_agent['dollars_actual'] }}</td>
+	    <td>{{ free_agent['position'] }}</td>
+	    <td>{{ free_agent['aav_pred'] }}</td>
+	    <td>{{ free_agent['aav_actual'] }}</td>
 	  </tr>
 	  {% endfor %}
 	  </tbody>
