@@ -117,6 +117,8 @@ def fa_output():
     # Put them together via stacking
     full_df = pd.concat([pitchers_df, position_df])
 
+    # Catch negatives
+    full_df.loc[full_df['dollars_pred'] < 0, 'dollars_pred'] = 0
     # Do some more formatting
     full_df['dollars_actual'] = full_df['dollars_actual'].apply(lambda x: '{:,.2f}'.format(x))
     full_df['dollars_pred'] = full_df['dollars_pred'].apply(lambda x: '{:,.2f}'.format(x))
