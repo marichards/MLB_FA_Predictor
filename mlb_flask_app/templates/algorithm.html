@@ -21,7 +21,8 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="{{ url_for('.index') }}">BaseballContracter</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 	<span class="navbar-toggler-icon"></span>
@@ -50,52 +51,41 @@
 	    <a class="nav-link" href="https://www.linkedin.com/in/matthew-a-richards/" target = "_blank"><b>LinkedIn</b></a>
 	  </li>
 	  <li class="nav-item">
-	    <a class="nav-link" href="https://github.com/marichards" target = "_blank"><b>Github</b></a>
+	    <a class="nav-link" href="https://github.com/marichards" target = "_blank" ><b>Github</b></a>
 	  </li>
 	</ul>
 	
       </div>
     </nav>
-
-<br><br>
     
     <main role="main">
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
 	<div class="container">
-	  <h1 class="display-3">Baseball Contracter</h1>
-	  <p>An Insight Data Science project for predicting free agent contracts</p>
-	  <p><a class="btn btn-primary btn-lg" href="{{ url_for('.fa_input') }}"  role="button">To the predictions!! &raquo;</a></p>
+	  <h1 class="display-3">How it Works</h1>
 	</div>
       </div>
 
-      <div class="container">
-	<!-- Example row of columns -->
-	<div class="row">
-	  <div class="col-md-4">
-	    <h2>How it Works</h2>
-	    <p>Baseball Contracter uses multiple model types to create its predictions. In this section, I describe these models and why I chose them.</p>
-	    <p><a class="btn btn-secondary" href="{{ url_for('.algorithm') }}" role="button">View details &raquo;</a></p>
-	  </div>
-	  <div class="col-md-4">
-	    <h2>How it Performs</h2>
-	    <p>At the end of the data, a prediction algorithm is only as good as its predictions. In this section, I briefly show how I validated the models that underly my predictions</p>
-	    <p><a class="btn btn-secondary" href="{{ url_for('.validation') }}" role="button">View details &raquo;</a></p>
-	  </div>
-	  <div class="col-md-4">
-	    <h2>About Me</h2>
-	    <p>I am Matt Richards, a Fellow at Insight Data Science. Check out this section to learn more about my background and find some links to other places where you can see me and my work.</p>
-	    <p><a class="btn btn-secondary" href="{{ url_for('.aboutme') }}" role="button">View details &raquo;</a></p>
-	  </div>
-	</div>
 
-	<hr>
+      <div class = "container">
+	<h2>The Problem</h2>
+	<p>During the long baseball offseason, large sports media groups like ESPN and MLB Network are hard-pressed to deliver interesting content in the absence of games. To fill the void, writers produce numerous pieces about free agents; these are players whose contracts expired the previous season and are free to sign with any team. Most of the offseason is populated with speculative articles and rumors about who might be signing where, for how much money, and for how many years. But as in most cases, the humans who run and write about baseball are subject to their own biases, leading to contract projections that can be all over the map. As with the rest of baseball, free agent contract predictions could be improved using existing data and provide machine-generated objective content to attract fans during the offseason.</p>
+	<p>Baseball Contracter is here to fill that void! Much as data-heavy websites like Fangraphs provide models to predict player performance during the season, Baseball Contracter uses historical data to predict which players will get contracts, how long those contracts will be, and how many dollars will be included</p>
+	
+	<h2>Data Collection</h2>
+	<p>Baseball Contracter pulls together data from </p>
 
-      </div> <!-- /container -->
+	<h2>Contract: Yes/No</h2>
+	<p></p>
 
+	<h2>Contract Length</h2>
+	<p>Predicting contract length takes a little more finesse than predicting whether or not a player will receive a contract. The reason is that unlike the binary (Yes/No) outcome of the previous model, this problem has many outcomes. Historically, player contracts range anywhere from 1-10 years. Furthermore, most of these contracts are on the short end; there are very few contracts of 7+ years. In order to better model this complexity, I use a Gradient Boosted Classifier</p>
+
+	
+	  
+      </div> <!--container-->
     </main>
-
         <!-- Bootstrap core JavaScript
 	     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->

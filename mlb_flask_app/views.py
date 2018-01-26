@@ -3,6 +3,7 @@ from flask import render_template, request # Bring in template and request funct
 from sqlalchemy import create_engine # Bring in DB connection ability
 from sqlalchemy_utils import database_exists, create_database # More DB
 import pandas as pd # DFs
+import numpy as np # Numpy
 import psycopg2 # Postgres language specifics
 
 # Bring in my user-defined models
@@ -25,6 +26,12 @@ con = psycopg2.connect(database = db_name,
                        password = password,
                        host = host)
 
+# Debug the navbar
+@app.route('/navbar')
+def navbar():
+    '''Make a working navbar'''
+    return render_template("navbar.html")
+
 @app.route('/')  
 @app.route('/index')
 def index():
@@ -36,46 +43,19 @@ def index():
 def aboutme():
     '''Return info about me'''
 
-    return render_template("index.html",
-                           title = 'About Me',
-                           user = {'nickname' : 'About Me'})
+    return render_template("aboutme.html")
 
 @app.route('/algorithm')
 def algorithm():
     '''Information about how it works'''
 
-    return render_template("index.html",
-                           title = 'Algorithm',
-                           user = {'nickname' : 'Algorithm'})
-
+    return render_template("algorithm.html")
 
 @app.route('/validation')
 def validation():
     '''Plots and tables showing validation, with text in between'''
 
-    return render_template("index.html",
-                           title = 'Validation',
-                           user = {'nickname' : 'Validation'})
-
-# Add a fancy database page
-@app.route('/2017_fancy')
-def page_2017_fancy():
-    sql_query = """
-
-SELECT * FROM free_agents WHERE "Year" = 2017;
-
-"""
-    query_results = pd.read_sql_query(sql_query, con)
-    free_agents = []
-
-    # Go through all rows
-    for i in range(0, query_results.shape[0]):
-
-        free_agents.append(dict(name = query_results.iloc[i]['Full_Name'],
-                           age = query_results.iloc[i]['Age'],
-                           destination = query_results.iloc[i]['Destination']))
-
-    return render_template('cesareans.html', free_agents = free_agents)
+    return render_template("validation.html")
 
 # Add "Input" and make it the home page too
 @app.route('/input')
@@ -121,7 +101,7 @@ def fa_output():
                                  'contract_actual' : y_test_pitch['Contract'],
                                  'length_pred' : length_pitch,
                                  'length_actual': y_test_pitch['Length'],
-                                 'dollars_pred' : dollars_pitch * inflation_factor,
+                                 'dollars_pred' : np.round(dollars_pitch * length_pitch * inflation_factor, decimals = -5),
                                  'dollars_actual' : y_test_pitch['Dollars']})
 
     position_df =  pd.DataFrame({'nameFirst' : position_prepped[position_prepped.Year == fa_year]['nameFirst'].values,
@@ -131,7 +111,7 @@ def fa_output():
                                  'contract_actual' : y_test_pos['Contract'],
                                  'length_pred' : length_pos,
                                  'length_actual': y_test_pos['Length'],
-                                 'dollars_pred' : dollars_pos * inflation_factor,
+                                 'dollars_pred' : np.round(dollars_pos * length_pos * inflation_factor, decimals = -5),
                                  'dollars_actual' : y_test_pos['Dollars']})
 
     # Put them together via stacking
@@ -145,15 +125,3 @@ def fa_output():
     full_df.loc[full_df.contract_pred == False,'length_pred'] = 0
 
     return render_template('output.html', free_agents = full_df)
-
-# Add a "Contact" page
-@app.route('/index#contact')
-
-def contacts():
-    ''' Put a simple contact info'''
-    
-
-    return render_template("index.html",
-                           title = 'Contacts',
-                           user = {'nickname' : 'Miguel'})
-

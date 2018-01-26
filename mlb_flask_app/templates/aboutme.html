@@ -21,7 +21,8 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="{{ url_for('.index') }}">BaseballContracter</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 	<span class="navbar-toggler-icon"></span>
@@ -50,52 +51,30 @@
 	    <a class="nav-link" href="https://www.linkedin.com/in/matthew-a-richards/" target = "_blank"><b>LinkedIn</b></a>
 	  </li>
 	  <li class="nav-item">
-	    <a class="nav-link" href="https://github.com/marichards" target = "_blank"><b>Github</b></a>
+	    <a class="nav-link" href="https://github.com/marichards" target = "_blank" ><b>Github</b></a>
 	  </li>
 	</ul>
 	
       </div>
     </nav>
-
-<br><br>
     
     <main role="main">
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
 	<div class="container">
-	  <h1 class="display-3">Baseball Contracter</h1>
-	  <p>An Insight Data Science project for predicting free agent contracts</p>
-	  <p><a class="btn btn-primary btn-lg" href="{{ url_for('.fa_input') }}"  role="button">To the predictions!! &raquo;</a></p>
+	  <h1 class="display-3">About Me</h1>
 	</div>
       </div>
 
-      <div class="container">
-	<!-- Example row of columns -->
-	<div class="row">
-	  <div class="col-md-4">
-	    <h2>How it Works</h2>
-	    <p>Baseball Contracter uses multiple model types to create its predictions. In this section, I describe these models and why I chose them.</p>
-	    <p><a class="btn btn-secondary" href="{{ url_for('.algorithm') }}" role="button">View details &raquo;</a></p>
-	  </div>
-	  <div class="col-md-4">
-	    <h2>How it Performs</h2>
-	    <p>At the end of the data, a prediction algorithm is only as good as its predictions. In this section, I briefly show how I validated the models that underly my predictions</p>
-	    <p><a class="btn btn-secondary" href="{{ url_for('.validation') }}" role="button">View details &raquo;</a></p>
-	  </div>
-	  <div class="col-md-4">
-	    <h2>About Me</h2>
-	    <p>I am Matt Richards, a Fellow at Insight Data Science. Check out this section to learn more about my background and find some links to other places where you can see me and my work.</p>
-	    <p><a class="btn btn-secondary" href="{{ url_for('.aboutme') }}" role="button">View details &raquo;</a></p>
-	  </div>
-	</div>
 
-	<hr>
-
-      </div> <!-- /container -->
-
+      <div class = "container">
+	<p> My name is Matthew (Matt) Richards and I am a data science fellow at Insight Data Science. This prediction model and web application were part of my project at Insight during the Winter 2018 session.</p>
+	
+	<p> Prior to joining Insight, I worked as a postdoctoral fellow at the Institute for Systems Biology. As a member of the <a href = "https://price.systemsbiology.org/" target = "_blank">Hood-Price Lab</a>, my work was focused on building tools and resources to better understand how genes interact with one another. 
+	  
+      </div> <!--container-->
     </main>
-
         <!-- Bootstrap core JavaScript
 	     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->

@@ -3,11 +3,11 @@ import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
 import numpy as np
-# Import LogisticRegression
+# Import GLM
+from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
-# Import GradientBoosted
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import GradientBoostingClassifier
+# Import RF
+from sklearn.ensemble import RandomForestClassifier
 # Import RSME
 from sklearn.metrics import mean_squared_error
 # Import Classification metrics
@@ -83,7 +83,7 @@ def predictContract(X_train, y_train, X_test):
     
     return logr, y_pred
 
-# Define the length function (boosted classification)
+# Define the length function (rf classification)
 def predictLength(X_train, y_train, X_test):
 
     # Shorten training to only non-null dollars
@@ -95,16 +95,16 @@ def predictLength(X_train, y_train, X_test):
     y_train_values = y_train['Length'].values
     
     # Designate a logistic regression model
-    gbc = GradientBoostingClassifier()
+    rfc = RandomForestClassifier()
 
     # Train the  model
-    gbc.fit(X_train, y_train_values)
+    rfc.fit(X_train, y_train_values)
 
-    y_pred = gbc.predict(X_test)    
+    y_pred = rfc.predict(X_test)    
     
-    return gbc, y_pred
+    return rfc, y_pred
 
-# Define the dollars function (xgboost regression)
+# Define the dollars function (linear regression)
 def predictDollars(X_train, y_train, X_test):
 
     # Shorten training to only non-null dollars
@@ -116,11 +116,11 @@ def predictDollars(X_train, y_train, X_test):
     y_train_values = y_train['AAV_2006'].values
     
     # Designate a logistic regression model
-    gbr = GradientBoostingRegressor()
+    lm = LinearRegression()
 
     # Train the  model
-    gbr.fit(X_train, y_train_values)
+    lm.fit(X_train, y_train_values)
 
-    y_pred = gbr.predict(X_test)    
+    y_pred = lm.predict(X_test)    
     
-    return gbr, y_pred
+    return lm, y_pred
