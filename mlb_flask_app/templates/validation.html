@@ -63,16 +63,24 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
 	<div class="container">
-	  <h1 class="display-3">About Me</h1>
+	  <h1 class="display-3">Model Validation</h1>
 	</div>
       </div>
 
 
       <div class = "container">
-	<p> My name is Matthew (Matt) Richards and I am a data science fellow at Insight Data Science. This prediction model and web application were part of my project at Insight during the Winter 2018 session.</p>
+	<h2>Contract Prediction</h2>
+	<p>A model for a binary outcome, such as my model for contract prediction, works by assigning a probability to each observation. For example, for a player certain to sign a contract, we would expect a probability close to 1 (e.g. p = 0.99); however, a player who is certain <strong>NOT</strong> to sign a contract, we would expect a probability close to 0 (e.g. p = 0.01). This example represents the ideal case, where it is easy to differentiate between players, but many players aren't as easy to predict. For instance, is a player with p = 0.5 likely to sign a contract? What about a player with p = 0.4 or p = 0.6? In order to make these predictions, we need to pick a threshold that constitutes a <i>positive</i> prediction (i.e. player DOES sign a contract). Any probability above this threshold will be considered a positive and any probability below the threshold will be considered a negative.</p>
+
+	<p>A common way to evaluate such a problem is by using a receiver operating characteristic (ROC) curve. In this plot, we vary the threshold between 0 and 1, use the threshold to assign players to positive/negative prediction based on their probabilities, and then evaluate how we did. We have 2 basic metrics here: 1) True positive rate, the rate at which we correctly identify players who WILL sign contracts; 2) False positive rate, the rate at which we incorrectly predict players who WILL sign contracts. In general, we want to keep our true positive rate high and our false positive rate low, but this is difficult to do. If we make our threshold very low, we'll predict that EVERYONE will sign a contract, so both of our rates will be 1. On the other hand, if we make our threshold very high, we'll predict that NOBODY will sign a contract, so both of our rates will be 0. It seems like a problem where we can't win!</p>
+
+	<p>Luckily, the ROC curve makes this a lot easier for us. As shown on the left, the best place to be on the ROC curve is the top left; that is, we get 100% true positives and 0% false positives. We'd like to get as close to this point as possible, and the area under the curve (AUC) helps us measure how close we are to this corner. Basically, we want to be as close to 1.0 as possible; in this case, our AUC is over 0.8, indicating that we're reasonably close to our ideal point. At this point, it turns out that the model predicts just over 72% of cases correctly. Considering that about 54% of free agents actually sign a contract, this represents a sizable increase over our baseline, suggesting that the model is pretty good at predicting which players will sign contracts.</p>
+
+	<!-- Insert ROC plot here -->
 	
-	<p> Prior to joining Insight, I worked as a postdoctoral fellow at the Institute for Systems Biology. As a member of the <a href = "https://price.systemsbiology.org/" target = "_blank">Hood-Price Lab</a>, my work was focused on building tools and resources to better understand how genes interact with one another. 
-	  
+	<h2>Value Prediction</h2>
+	<p>Unlike a model with binary outcomes, a linear regression model cannot be evaluated with an ROC curve. We're not talking about 2 discrete classes, we're now talking about a continuous spectrum of possible values (about 0-$30 million in this case). Rather than measuring how many predictions we got </p>
+	
       </div> <!--container-->
     </main>
         <!-- Bootstrap core JavaScript

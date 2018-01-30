@@ -71,16 +71,18 @@
       <div class = "container">
 	<h2>The Problem</h2>
 	<p>During the long baseball offseason, large sports media groups like ESPN and MLB Network are hard-pressed to deliver interesting content in the absence of games. To fill the void, writers produce numerous pieces about free agents; these are players whose contracts expired the previous season and are free to sign with any team. Most of the offseason is populated with speculative articles and rumors about who might be signing where, for how much money, and for how many years. But as in most cases, the humans who run and write about baseball are subject to their own biases, leading to contract projections that can be all over the map. As with the rest of baseball, free agent contract predictions could be improved using existing data and provide machine-generated objective content to attract fans during the offseason.</p>
-	<p>Baseball Contracter is here to fill that void! Much as data-heavy websites like Fangraphs provide models to predict player performance during the season, Baseball Contracter uses historical data to predict which players will get contracts, how long those contracts will be, and how many dollars will be included</p>
+	<p>Baseball Contracter is here to fill that void! Much as data-heavy websites like Fangraphs provide models to predict player performance during the season, Baseball Contracter uses historical data to predict which players will get contracts and how much those contracts will be worth.</p>
 	
 	<h2>Data Collection</h2>
-	<p>Baseball Contracter pulls together data from </p>
+	<p>Baseball Contracter pulls together data from a handful of different resources. These include the Sean Lahman Database (player stats), the Baseball Cube (team payrolls), ESPN (historical contracts), Baseball Reference (free agent value and ages), and Fangraphs (team positional values). For most of these data, I scraped the relevant stats using Python; the Sean Lahman Database was the exception, as it can be found on Github. After gathering and cleaning the data, I deposited them into a PostgreSQL database</p>
+	<p>Once the data were assembled, I went about narrowing down which numbers were actually relevant to the problem. In general, this meant a combination of key player performance statistics and other, subtler factors such as team "need". Notably, many of the statistics differ quite sharply between position players and pitchers. Thus, I created separate datasets for these 2 groups and also built separate models in each modeling phase.</p>
 
 	<h2>Contract: Yes/No</h2>
-	<p></p>
+	<p>Before determining actual contract values, my first challenge was to predict whether or not a player would actually receive a major league contract. In my dataset from 2006-2016, only about half (54%) of eligible free agents actually received contracts. In order to predict which free agents would receive contracts, I used a Logistic Regression model, a classification technique that aims to differentiate between two different outcomes using logarithmic transformations of the variables.</p>
 
-	<h2>Contract Length</h2>
-	<p>Predicting contract length takes a little more finesse than predicting whether or not a player will receive a contract. The reason is that unlike the binary (Yes/No) outcome of the previous model, this problem has many outcomes. Historically, player contracts range anywhere from 1-10 years. Furthermore, most of these contracts are on the short end; there are very few contracts of 7+ years. In order to better model this complexity, I use a Gradient Boosted Classifier</p>
+	<h2>Contract Value</h2>
+	<p>Predicting contract length takes a little more finesse than predicting whether or not a player will receive a contract. The reason is that unlike the binary (Yes/No) outcome of the previous model, this problem has a continuous range of possible outcomes. Historically, player contracts range anywhere from under $1 million to around $35 million annually. Furthermore, most of these contracts are on the short end; there are very few contracts of over $20 million and even fewer over $30 million. To address this problem, I used Linear Regression, a technique that takes in the contract annual values and essentially tries to fit a line using other data.</p>
+
 
 	
 	  
