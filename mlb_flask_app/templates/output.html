@@ -149,7 +149,10 @@
 	  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" class="init">
       $(document).ready(function() {
-      $('#example').DataTable();
+      $('#example').DataTable( {
+      "order": [[3, "desc"]]
+      } );
+      
       } );
       </script>
 

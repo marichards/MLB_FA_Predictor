@@ -4,7 +4,7 @@ import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 # Import GLM
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.linear_model import LogisticRegression
 # Import RF
 from sklearn.ensemble import RandomForestClassifier
@@ -116,11 +116,11 @@ def predictDollars(X_train, y_train, X_test):
     y_train_values = y_train['AAV_2006'].values
     
     # Designate a logistic regression model
-    lm = LinearRegression()
+    gb = GradientBoostingRegressor()
 
     # Train the  model
-    lm.fit(X_train, y_train_values)
+    gb.fit(X_train, y_train_values)
 
-    y_pred = lm.predict(X_test)    
+    y_pred = gb.predict(X_test)    
     
-    return lm, y_pred
+    return gb, y_pred
