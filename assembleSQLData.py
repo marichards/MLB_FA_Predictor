@@ -13,7 +13,8 @@ all_years = list(range(2006,2018))
 all_fa_data = getAllFAData(all_years)
 
 # Grab payroll data for 2006 to present
-team_payrolls = scrapePayrollData(2006)
+# Comment this out for now because data source has changed
+#team_payrolls = scrapePayrollData(2006)
 
 # Simply load the Team WAR data
 with open('position_war.pickle', 'rb') as file:
@@ -67,5 +68,5 @@ teams_2004.to_sql('teams', engine, if_exists = 'replace')
 # 7-9 The other 4 tables
 position_war.to_sql("position_team_war", engine, if_exists = 'replace')
 pitcher_war.to_sql("pitcher_team_war", engine, if_exists = 'replace')
-team_payrolls.to_sql("payrolls", engine, if_exists= 'replace')
+#team_payrolls.to_sql("payrolls", engine, if_exists= 'replace')
 all_fa_data.to_sql("free_agents", engine, if_exists = 'replace')
