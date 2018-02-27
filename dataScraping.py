@@ -41,7 +41,7 @@ def scrapePayrollData(year):
 def compileFAsForYear(year):
     
     # Build the URL given the year
-    url = "https://www.baseball-reference.com/leagues/MLB/{}-free-agents.shtml#fa_signings::none".format(year)
+    url = "https://www.baseball-reference.com/leagues/MLB/{}-free-agents.shtml".format(year)
     
     # Get the full page and then narrow down to the table
     results = requests.get(url).text

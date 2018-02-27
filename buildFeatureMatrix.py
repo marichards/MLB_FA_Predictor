@@ -209,6 +209,10 @@ def main():
     only_pos = all_batting[all_batting.Position.isin(['SP','RP']) == False]
     pitching_fa = addFilterFreeAgents(pitching_df, engine)
 
+    # Fix the pitchers who are 'P' instead of 'SP' or 'RP'
+    pitching_fa.loc[pitching_fa.IPouts >= 0.5, 'Position'] = 'SP'
+    pitching_fa.loc[pitching_fa.IPouts < 0.5, 'Position'] = 'RP'
+
     # Add Team WAR values
     pitching_war = allPositionWAR(pitching_fa, engine)
     position_war = allPositionWAR(only_pos, engine)
