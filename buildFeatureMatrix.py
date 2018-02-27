@@ -213,6 +213,9 @@ def main():
     pitching_fa.loc[pitching_fa.IPouts >= 0.5, 'Position'] = 'SP'
     pitching_fa.loc[pitching_fa.IPouts < 0.5, 'Position'] = 'RP'
 
+    # Fix "OF" to be LF
+    only_pos.loc[only_pos.Position == 'OF','Position'] = 'LF'
+
     # Add Team WAR values
     pitching_war = allPositionWAR(pitching_fa, engine)
     position_war = allPositionWAR(only_pos, engine)
