@@ -82,10 +82,6 @@ def fa_output():
     _, contract_pitch = models.predictContract(X_train_pitch, y_train_pitch, X_test_pitch)
     _, contract_pos = models.predictContract(X_train_pos, y_train_pos, X_test_pos)
 
-    # Predict contract length
-    _, length_pitch = models.predictLength(X_train_pitch, y_train_pitch, X_test_pitch)
-    _, length_pos = models.predictLength(X_train_pos, y_train_pos, X_test_pos)
-
     # Predict contract dollars
     _, dollars_pitch = models.predictDollars(X_train_pitch, y_train_pitch, X_test_pitch)
     _, dollars_pos = models.predictDollars(X_train_pos, y_train_pos, X_test_pos)
@@ -99,25 +95,17 @@ def fa_output():
                                  'position' : pitcher_all[pitcher_prepped.Year == fa_year]['Position'],
                                  'contract_pred' : contract_pitch,
                                  'contract_actual' : y_test_pitch['Contract'],
-                                 'length_pred' : length_pitch,
-                                 'length_actual': y_test_pitch['Length'],
-                                 'aav_pred' : np.round(dollars_pitch * inflation_factor, decimals = -5),
-                                 'aav_actual' : np.round(y_test_pitch['AAV_2006']  * inflation_factor, decimals = -5)})
+                                 'aav_pred' : np.round(dollars_pitch * inflation_factor/1e6, decimals = 1),
+                                 'aav_actual' : np.round(y_test_pitch['AAV_2006']  * inflation_factor/1e6, decimals = 1)})
                                  
-#                                 'dollars_pred' : np.round(dollars_pitch * length_pitch * inflation_factor, decimals = -5),
-#                                 'dollars_actual' : y_test_pitch['Dollars']})
 
     position_df =  pd.DataFrame({'nameFirst' : position_prepped[position_prepped.Year == fa_year]['nameFirst'].values,
                                  'nameLast' : position_prepped[position_prepped.Year == fa_year]['nameLast'].values,
                                  'position' : position_all[position_prepped.Year == fa_year]['Position'],
                                  'contract_pred' : contract_pos,
                                  'contract_actual' : y_test_pos['Contract'],
-                                 'length_pred' : length_pos,
-                                 'length_actual': y_test_pos['Length'],
-                                 'aav_pred' : np.round(dollars_pos * inflation_factor, decimals = -5),
-                                 'aav_actual' : np.round(y_test_pos['AAV_2006']  * inflation_factor, decimals = -5)})
- #                                'dollars_pred' : np.round(dollars_pos * length_pos * inflation_factor, decimals = -5),
- #                                'dollars_actual' : y_test_pos['Dollars']})
+                                 'aav_pred' : np.round(dollars_pos * inflation_factor/1e6, decimals = 1),
+                                 'aav_actual' : np.round(y_test_pos['AAV_2006']  * inflation_factor/1e6, decimals = 1)})
 
     # Put them together via stacking
     full_df = pd.concat([pitchers_df, position_df])
@@ -127,10 +115,9 @@ def fa_output():
     full_df.loc[full_df.contract_pred == False,'aav_pred'] = 0
 
     # Do some more formatting
-    full_df['aav_actual'] = full_df['aav_actual'].apply(lambda x: '{:,.2f}'.format(x))
-    full_df['aav_pred'] = full_df['aav_pred'].apply(lambda x: '{:,.2f}'.format(x))
-    full_df['aav_actual'].replace({'nan': '0'}, inplace = True)
+    full_df['aav_actual'] = full_df['aav_actual'].apply(lambda x: '$ {}'.format(x))
+    full_df['aav_pred'] = full_df['aav_pred'].apply(lambda x: '$ {}'.format(x))
+    full_df['aav_actual'].replace({'$ nan': '$ 0.0'}, inplace = True)
     
-#    full_df.loc[full_df.contract_pred == False,'length_pred'] = 0
 
     return render_template('output.html', free_agents = full_df)
