@@ -120,4 +120,4 @@ def fa_output():
     full_df['aav_actual'].replace({'$ nan': '$ 0.0'}, inplace = True)
     
 
-    return render_template('output.html', free_agents = full_df)
+    return render_template('output.html', free_agents = full_df, fa_year = fa_year)
